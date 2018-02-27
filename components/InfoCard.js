@@ -5,8 +5,8 @@ import {Card, CardItem} from 'native-base'
 const InfoCard = ({title, value}) => {
     return (
         <Card transparent style={{flex: 1}}>
-            <Text style={{flex: 1, textAlign: 'center', textAlignVertical: 'center'}}>{title}</Text>
-            <Text style={{flex: 1, textAlign: 'center', textAlignVertical: 'center'}}>{value}</Text>
+            <Text style={{flex: 1, textAlign: 'center', textAlignVertical: 'center'}}>{title.toString()}</Text>
+            <Text style={{flex: 1, textAlign: 'center', textAlignVertical: 'center'}}>{value.toString()}</Text>
         </Card>
     )
 };

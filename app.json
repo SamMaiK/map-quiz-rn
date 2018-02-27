@@ -6,5 +6,7 @@
       "barStyle": "light-content",
       "backgroundColor": "#334393"
     }
-  }
+  },
+  "name": "mapquizrm",
+  "displayName": "Map-Quiz"
 }

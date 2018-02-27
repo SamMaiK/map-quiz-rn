@@ -1,44 +1,77 @@
 import React from 'react';
-import { Spinner } from 'native-base';
 import Footer from './components/Footer'
 import InfoPanel from './components/InfoPanel'
-import { View, Text } from 'react-native'
-import { styles as commonStyles } from './styles/common'
+import Map from './components/Map'
+import {View, Text, AsyncStorage} from 'react-native'
+import {getHighscoreFromStorage} from './helpers/storage'
+import dataForGame from './capitalCities.json'
+
+const initialState = {
+    gameStart: true,
+    gameOver: false,
+    showMarker: false,
+    showResult: false,
+    currentCityIndex: 0,
+    correctSelections: 0,
+    kilometersLeft: 1500,
+    resultDistance: 0,
+    mapZoom: 4,
+    mapCenter: {
+        lat: 48.12,
+        lng: 11.54
+    },
+    markerPosition: {
+        lat: 0,
+        lng: 0
+    },
+    highScore: 0
+};
 
 export default class App extends React.Component {
-    constructor() {
-        super()
-        this.state = {
-            loading: true
-        }
+    constructor(props) {
+        super(props);
+        this.map = null;
+        this.cities = dataForGame.capitalCities;
+        this.state = initialState;
     }
 
-    async componentWillMount() {
-        await Expo.Font.loadAsync({
-            'Roboto': require('native-base/Fonts/Roboto.ttf'),
-            'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-            'Ionicons': require('@expo/vector-icons/fonts/Ionicons.ttf'),
-        });
-        this.setState({loading: false})
+    componentDidMount() {
+        getHighscoreFromStorage().then((score) => {
+            this.setState({highScore: score})
+        })
     }
 
     render() {
-        const {loading} = this.state;
-        if (loading) {
-            return (
-                <View style={{flex: 1}}>
-                    <Spinner/>
+        const {setMarkerPosition, cities, applySelection, nextCity, closeStartOverlay, startNewGame, setMap} = this;
+        const {
+            showMarker,
+            markerPosition,
+            correctSelections,
+            kilometersLeft,
+            currentCityIndex,
+            showResult,
+            resultDistance,
+            gameOver,
+            gameStart,
+            mapCenter,
+            mapZoom,
+            highScore
+        } = this.state;
+        return (
+            <View style={{flex: 1}}>
+                <View style={{flex: 3}}>
+                    <InfoPanel
+                        correctSelections={correctSelections}
+                        kilometersLeft={kilometersLeft}
+                        currentCity={cities[currentCityIndex].capitalCity}
+                        showResult={showResult}
+                        resultDistance={resultDistance}
+                        highScore={highScore}
+                    />
                 </View>
-            )
-        }
-        else {
-            return (
-                <View style={{flex: 1}}>
-                    <View style={{flex: 3}}><InfoPanel/></View>
-                    <View style={{flex: 7}}><Text>Content</Text></View>
-                    <View style={{flex: 1}}><Footer/></View>
-                </View>
-            );
-        }
+                <View style={{flex: 7}}><Map/></View>
+                <View style={{flex: 1}}><Footer/></View>
+            </View>
+        );
     }
 }

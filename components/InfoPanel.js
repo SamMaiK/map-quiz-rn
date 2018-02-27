@@ -1,26 +1,36 @@
 import React from 'react'
 import {View, Text} from 'react-native'
-import InfoCard from "./InfoCard";
+import InfoCard from "./InfoCard"
+import CurrentCityPanel from './CurrentCityPanel'
 
-const InfoPanel = () => {
+const InfoPanel = ({correctSelections, kilometersLeft, currentCity, showResult, resultDistance, highScore}) => {
     return (
         <View style={{flex: 1}}>
             <View style={{flex: 1, flexDirection: 'row'}}>
                 <InfoCard
                     title="Correct selections"
-                    value="12"
+                    value={correctSelections}
                 />
                 <InfoCard
                     title="Highscore"
-                    value="13"
+                    value={highScore}
                 />
                 <InfoCard
                     title="Km's left"
-                    value="1000"
+                    value={kilometersLeft}
                 />
 
             </View>
-            <View style={{flex: 1}}><Text>Current City Panel</Text></View>
+
+            <View style={{flex: 1}}>
+                {/*{showResult ?*/}
+                    {/*<ResultPanel/>*/}
+                {/*}*/}
+
+                <CurrentCityPanel
+                    currentCity={currentCity}
+                />
+            </View>
         </View>
 
 
